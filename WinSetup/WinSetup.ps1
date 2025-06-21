@@ -52,6 +52,7 @@ Import-Module (Join-Path $ScriptRoot "modules\Scoop.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\GitRepo.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\PythonHandoff.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\Reporting.psm1")
+Import-Module (Join-Path $ScriptRoot "modules\WinUpdate.psm1")
 
 # --- Global Logging Setup ---
 $Global:LogFile = "$env:USERPROFILE\Desktop\WinSetup_log.txt"
