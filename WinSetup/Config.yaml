@@ -1,0 +1,41 @@
+role: workstation
+git:
+  repo: https://github.com/YOURUSER/YOURREPO.git
+  branch: main
+  allowlist:
+    - abcdef1234567890deadbeefdeadbeefdeadbeef  # trusted commit hashes
+buckets:
+  - extras
+  - nerd-fonts
+apps:
+  required:
+    - python
+    - 7zip
+    - git
+    - curl
+    - vim
+    - sysinternals
+    - sudo
+    - jq
+    - nmap
+  optional:
+    - ffmpeg
+    - vlc
+services:
+  workstation:
+    disable:
+      - DiagTrack
+      - OneSyncSvc
+      - XblAuthManager
+      - ...
+    enable:
+      - WSearch
+  server:
+    disable:
+      - PrintSpooler
+      - Fax
+      - ...
+firewall:
+  trusted_subnet: auto
+  block_telemetry: true
+  detailed_diff: true
