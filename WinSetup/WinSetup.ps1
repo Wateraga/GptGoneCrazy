@@ -48,11 +48,11 @@ $role = $config.role
 Import-Module (Join-Path $ScriptRoot "modules\Preflight.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\Services.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\Firewall.psm1")
+Import-Module (Join-Path $ScriptRoot "modules\WinUpdate.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\Scoop.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\GitRepo.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\PythonHandoff.psm1")
 Import-Module (Join-Path $ScriptRoot "modules\Reporting.psm1")
-Import-Module (Join-Path $ScriptRoot "modules\WinUpdate.psm1")
 
 # --- Global Logging Setup ---
 $Global:LogFile = "$env:USERPROFILE\Desktop\WinSetup_log.txt"
@@ -80,6 +80,7 @@ try {
     Preflight::Run -Config $config -Role $role
     Services::Run -Config $config -Role $role
     Firewall::Run -Config $config
+    WinUpdate\Run
     Scoop::Run -Config $config
     GitRepo::Run -Config $config
     PythonHandoff::Run -Config $config

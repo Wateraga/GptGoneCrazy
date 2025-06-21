@@ -67,43 +67,44 @@ function Run-WindowsUpdate {
     Add-Log "Update command issued, checking for further actions."
 }
 
-#--- MAIN LOGIC ---
-Add-Log "=== Windows Automated Update Cycle Start ==="
+function Run {
+    Add-Log "=== Windows Automated Update Cycle Start ==="
 
-# Ensure script is scheduled for post-reboot if not already
-if (-not (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue)) {
-    Schedule-SelfAtLogon
-}
-
-# Run Windows Update
-Run-WindowsUpdate
-
-# Check if a reboot is required (wait a bit for detection)
-Start-Sleep 15
-if (Is-RebootPending) {
-    Add-Log "Reboot is pending. System will reboot in 15 seconds..."
-    Start-Sleep 15
-    Restart-Computer -Force
-    exit
-}
-
-# Double-check for remaining updates
-Add-Log "Re-checking for remaining updates..."
-$remaining = Get-WindowsUpdate -AcceptAll -IgnoreReboot -Install -AutoReboot -ErrorAction SilentlyContinue
-
-if ($remaining) {
-    Add-Log "Further updates found, will repeat after reboot if required."
-    if (Is-RebootPending) {
-        Restart-Computer -Force
-        exit
+    # Ensure script is scheduled for post-reboot if not already
+    if (-not (Get-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue)) {
+        Schedule-SelfAtLogon
     }
-} else {
-    Add-Log "No further updates found. Cleaning up..."
-    Remove-SelfSchedule
-    Add-Log "=== Windows is up to date and cleanup is complete. ==="
+
+    # Run Windows Update
+    Run-WindowsUpdate
+
+    # Check if a reboot is required (wait a bit for detection)
+    Start-Sleep 15
+    if (Is-RebootPending) {
+        Add-Log "Reboot is pending. System will reboot in 15 seconds..."
+        Start-Sleep 15
+        Restart-Computer -Force
+        return
+    }
+
+    # Double-check for remaining updates
+    Add-Log "Re-checking for remaining updates..."
+    $remaining = Get-WindowsUpdate -AcceptAll -IgnoreReboot -Install -AutoReboot -ErrorAction SilentlyContinue
+
+    if ($remaining) {
+        Add-Log "Further updates found, will repeat after reboot if required."
+        if (Is-RebootPending) {
+            Restart-Computer -Force
+            return
+        }
+    } else {
+        Add-Log "No further updates found. Cleaning up..."
+        Remove-SelfSchedule
+        Add-Log "=== Windows is up to date and cleanup is complete. ==="
+    }
+
+    # Optionally delete this script after run (uncomment if desired)
+    # Remove-Item -Path $ScriptPath -Force
 }
 
-# Optionally delete this script after run (uncomment if desired)
-# Remove-Item -Path $ScriptPath -Force
-
-exit 0
+Export-ModuleMember -Function Run

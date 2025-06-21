@@ -8,6 +8,7 @@
 - Detailed logging, Markdown summaries, and Event Log integration
 - Parallel Scoop installs and optional-app prompts
 - Python handoff for cross-platform or advanced automation
+- Automated Windows Update with reboot handling
 
 ## Usage
 
