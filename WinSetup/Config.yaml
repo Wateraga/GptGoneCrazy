@@ -22,19 +22,21 @@ apps:
     - ffmpeg
     - vlc
 services:
+  # Use the service Name from Get-Service for each entry
+  # Lists under each role can contain multiple service names
   workstation:
     disable:
       - DiagTrack
       - OneSyncSvc
       - XblAuthManager
-      - ...
+      # Add more services here, e.g. RemoteRegistry
     enable:
       - WSearch
   server:
     disable:
       - PrintSpooler
       - Fax
-      - ...
+      # Add more services here, e.g. AppMgmt
 firewall:
   trusted_subnet: auto
   block_telemetry: true

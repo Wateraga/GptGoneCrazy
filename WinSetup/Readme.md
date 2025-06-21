@@ -16,6 +16,20 @@
    `WinSetup.ps1`, `WinSetup.py`, `config.yaml`, `modules/`, `.gitignore`, etc.
 3. Run `WinSetup.ps1` as Administrator
 4. Review logs and Markdown summary after completion
+## Configuring Services
+Add service names under `services.<role>.disable` or `services.<role>.enable` in `config.yaml`. Use the short **Name** from `Get-Service` and list one entry per line:
+
+```yaml
+services:
+  workstation:
+    disable:
+      - DiagTrack
+      - OneSyncSvc
+      # - RemoteRegistry  # example additional service
+    enable:
+      - WSearch
+```
+
 
 ## Troubleshooting
 
